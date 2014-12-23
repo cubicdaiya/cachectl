@@ -145,6 +145,16 @@ func deleteCache(fpath string, fsize int64, rate float64) error {
 	return nil
 }
 
+func runDeleteCache(path string, fsize int64, rate float64) {
+	fmt.Printf("Before deleting %s 's page cache\n\n", path)
+	printCacheStat(path, fsize)
+
+	deleteCache(path, fsize, rate)
+
+	fmt.Printf("\nAfter deleting %s 's page cache\n\n", path)
+	printCacheStat(path, fsize)
+}
+
 func main() {
 
 	// Parse flags
@@ -199,13 +209,7 @@ func main() {
 					if !info.Mode().IsRegular() {
 						return nil
 					}
-					fmt.Printf("Before deleting %s 's page cache\n\n", path)
-					printCacheStat(path, fi.Size())
-
-					deleteCache(path, fi.Size(), *rate)
-
-					fmt.Printf("\nAfter deleting %s 's page cache\n\n", path)
-					printCacheStat(path, fi.Size())
+					runDeleteCache(path, info.Size(), *rate)
 					return nil
 				})
 
@@ -219,13 +223,7 @@ func main() {
 				os.Exit(1)
 			}
 
-			fmt.Printf("Before deleting %s 's page cache\n\n", *fpath)
-			printCacheStat(*fpath, fi.Size())
-
-			deleteCache(*fpath, fi.Size(), *rate)
-
-			fmt.Printf("\nAfter deleting %s 's page cache\n\n", *fpath)
-			printCacheStat(*fpath, fi.Size())
+			runDeleteCache(*fpath, fi.Size(), *rate)
 		}
 	}
 
