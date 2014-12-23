@@ -128,6 +128,11 @@ func deleteCache(fpath string, fsize int64, rate float64) error {
 		return errors.New(fmt.Sprintf("%f: rate should be less than 1.0\n", rate))
 	}
 
+	result := C.fadvise(fpath, rate)
+	if result == -1 {
+		return errors.New(fmt.Sprintf("failed to delete page cache for %s", fpath))
+	}
+
 	return nil
 }
 
@@ -137,7 +142,7 @@ func main() {
 	version := flag.Bool("v", false, "show version")
 	op := flag.String("op", "stat", "operation(stat, del)")
 	fpath := flag.String("f", "", "target file path")
-	rate := flag.Float64("r", 0.0, "rate of page cache deleted(0.0 <= r<= 1.0)")
+	rate := flag.Float64("r", 1.0, "rate of page cache deleted(0.0 <= r<= 1.0)")
 	flag.Parse()
 
 	if *version {
