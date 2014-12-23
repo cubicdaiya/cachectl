@@ -128,7 +128,7 @@ func deleteCache(fpath string, fsize int64, rate float64) error {
 		return errors.New(fmt.Sprintf("%f: rate should be less than 1.0\n", rate))
 	}
 
-	result := C.fadvise(fpath, rate)
+	result := C.fadvise(C.CString(fpath), C.float(rate))
 	if result == -1 {
 		return errors.New(fmt.Sprintf("failed to delete page cache for %s", fpath))
 	}
