@@ -1,6 +1,10 @@
 # cachectl
 
-`cachectl` is a controller for regular file's page cache
+`cachectl` is a controller for regular file's page cache. 
+
+## Dependency
+
+`posix_fadvise` is required.
 
 ## Install
 
