@@ -169,12 +169,12 @@ func main() {
 	if *op == "stat" {
 		printCacheStat(*fpath, fi.Size())
 	} else {
-		fmt.Printf("Before deleting %s 's page cache\n", *fpath)
+		fmt.Printf("Before deleting %s 's page cache\n\n", *fpath)
 		printCacheStat(*fpath, fi.Size())
 
 		deleteCache(*fpath, fi.Size(), *rate)
 
-		fmt.Printf("After deleting %s 's page cache\n", *fpath)
+		fmt.Printf("After deleting %s 's page cache\n\n", *fpath)
 		printCacheStat(*fpath, fi.Size())
 	}
 
