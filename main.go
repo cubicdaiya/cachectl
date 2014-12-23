@@ -174,7 +174,7 @@ func main() {
 
 		deleteCache(*fpath, fi.Size(), *rate)
 
-		fmt.Printf("After deleting %s 's page cache\n\n", *fpath)
+		fmt.Printf("\nAfter deleting %s 's page cache\n\n", *fpath)
 		printCacheStat(*fpath, fi.Size())
 	}
 
