@@ -93,6 +93,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 	"runtime"
 )
 
@@ -113,9 +114,15 @@ func printCacheStat(fpath string, fsize int64) {
 	pagesizeKB := pagesize / 1024
 	if fsize == 0 {
 		fmt.Printf("%s 's pages in cache: %d/%d (%.1f%%) [filesize=%.1fK, pagesize=%dK]\n", fpath, 0, 0, 0.0, 0.0, pagesizeKB)
+		return
 	}
 
 	pages := (fsize + int64(pagesize) - 1) / int64(pagesize)
+	if pages == 0.0 {
+		fmt.Printf("%s 's pages in cache: %d/%d (%.1f%%) [filesize=%.1fK, pagesize=%dK]\n", fpath, 0, 0, 0.0, 0.0, pagesizeKB)
+		return
+	}
+
 	pagesActive := C.activePages(C.CString(fpath))
 	activeRate := 100.0 * (float64(pagesActive) / float64(pages))
 	filesizeKB := float64(fsize) / 1024
@@ -162,20 +169,62 @@ func main() {
 	}
 
 	if *op == "stat" {
-		if !fi.Mode().IsRegular() {
-			fmt.Printf("%s is not regular file\n", fi.Name())
-			os.Exit(1)
+		if fi.IsDir() {
+			err := filepath.Walk(*fpath,
+				func(path string, info os.FileInfo, err error) error {
+					if !info.Mode().IsRegular() {
+						return nil
+					}
+					printCacheStat(path, info.Size())
+					return nil
+				})
+			if err != nil {
+				fmt.Printf("failed to show stat for %s.", fi.Name())
+				os.Exit(1)
+			}
+		} else {
+			if !fi.Mode().IsRegular() {
+				fmt.Printf("%s is not regular file\n", fi.Name())
+				os.Exit(1)
+			}
+
+			printCacheStat(*fpath, fi.Size())
 		}
-
-		printCacheStat(*fpath, fi.Size())
 	} else {
-		fmt.Printf("Before deleting %s 's page cache\n\n", *fpath)
-		printCacheStat(*fpath, fi.Size())
+		if fi.IsDir() {
+			err := filepath.Walk(*fpath,
+				func(path string, info os.FileInfo, err error) error {
+					if !info.Mode().IsRegular() {
+						return nil
+					}
+					fmt.Printf("Before deleting %s 's page cache\n\n", *fpath)
+					printCacheStat(*fpath, fi.Size())
 
-		deleteCache(*fpath, fi.Size(), *rate)
+					deleteCache(*fpath, fi.Size(), *rate)
 
-		fmt.Printf("\nAfter deleting %s 's page cache\n\n", *fpath)
-		printCacheStat(*fpath, fi.Size())
+					fmt.Printf("\nAfter deleting %s 's page cache\n\n", *fpath)
+					printCacheStat(*fpath, fi.Size())
+					return nil
+				})
+
+			if err != nil {
+				fmt.Printf("failed to show stat for %s.", fi.Name())
+				os.Exit(1)
+			}
+		} else {
+			if !fi.Mode().IsRegular() {
+				fmt.Printf("%s is not regular file\n", fi.Name())
+				os.Exit(1)
+			}
+
+			fmt.Printf("Before deleting %s 's page cache\n\n", *fpath)
+			printCacheStat(*fpath, fi.Size())
+
+			deleteCache(*fpath, fi.Size(), *rate)
+
+			fmt.Printf("\nAfter deleting %s 's page cache\n\n", *fpath)
+			printCacheStat(*fpath, fi.Size())
+		}
 	}
 
 }
