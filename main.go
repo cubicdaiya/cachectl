@@ -118,13 +118,15 @@ func printCacheStat(fpath string, fsize int64) {
 	}
 
 	pages := (fsize + int64(pagesize) - 1) / int64(pagesize)
-	if pages == 0.0 {
-		fmt.Printf("%s 's pages in cache: %d/%d (%.1f%%) [filesize=%.1fK, pagesize=%dK]\n", fpath, 0, 0, 0.0, 0.0, pagesizeKB)
-		return
-	}
 
 	pagesActive := C.activePages(C.CString(fpath))
-	activeRate := 100.0 * (float64(pagesActive) / float64(pages))
+	activeRate := float64(0)
+	if pagesActive == -1 {
+		pagesActive = 0
+		pages = 0
+	} else {
+		activeRate = 100.0 * (float64(pagesActive) / float64(pages))
+	}
 	filesizeKB := float64(fsize) / 1024
 	fmt.Printf("%s 's pages in cache: %d/%d (%.1f%%)  [filesize=%.1fK, pagesize=%dK]\n",
 		fpath, pagesActive, pages, activeRate, filesizeKB, pagesizeKB)
@@ -197,13 +199,13 @@ func main() {
 					if !info.Mode().IsRegular() {
 						return nil
 					}
-					fmt.Printf("Before deleting %s 's page cache\n\n", *fpath)
-					printCacheStat(*fpath, fi.Size())
+					fmt.Printf("Before deleting %s 's page cache\n\n", path)
+					printCacheStat(path, fi.Size())
 
-					deleteCache(*fpath, fi.Size(), *rate)
+					deleteCache(path, fi.Size(), *rate)
 
-					fmt.Printf("\nAfter deleting %s 's page cache\n\n", *fpath)
-					printCacheStat(*fpath, fi.Size())
+					fmt.Printf("\nAfter deleting %s 's page cache\n\n", path)
+					printCacheStat(path, fi.Size())
 					return nil
 				})
 
