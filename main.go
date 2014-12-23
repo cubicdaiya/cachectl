@@ -38,7 +38,7 @@ error:
 
 int activePages(const char *path)
 {
-    int j, fd, pages, pagesize;
+    int i, j, fd, pages, pagesize;
     struct stat st;
     void *m;
     char *pageinfo;
@@ -71,8 +71,9 @@ int activePages(const char *path)
         goto error;
     }
 
+    i = 0;
     j = 0;
-    for (int i=0; i < pages; i++) {
+    for (i = 0; i < pages; i++) {
         if(pageinfo[i++] & 1) {
             j++;
         }
