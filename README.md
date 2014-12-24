@@ -18,13 +18,13 @@ go get -u github.com/cubicdaiya/cachectl
 cachectl -f /var/log/access_log
 ```
 
-## Delete Page Cache For File
+## Purge Page Cache For File
 
 ```
-cachectl -op del -f /var/log/access_log
+cachectl -op purge -f /var/log/access_log
 ```
 
-If you want to leave a cache appended recently, assigning a rate for deleting page cache with `-r` is recommended.
+If you want to leave a cache appended recently, assigning a rate for purging page cache with `-r` is recommended.
 
 ```
 cachectl -op del -f /var/log/access_log -r 0.9

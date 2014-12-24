@@ -1,9 +1,9 @@
 
-cachectl: *.go
-	go build -o cachectl
+bin/cachectl: *.go
+	go build -o bin/cachectl
 
 fmt:
 	go fmt ./...
 
 clean:
-	rm -rf cachectl
+	rm -rf bin/cachectl
