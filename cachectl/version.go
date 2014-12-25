@@ -5,11 +5,12 @@ import (
 	"runtime"
 )
 
-func PrintCachectlVersion() {
-	fmt.Printf(`cachectl %s
+func PrintVersion(name string) {
+	fmt.Printf(`%s %s
 Compiler: %s %s
 Copyright (C) 2014 Tatsuhiko Kubo <cubicdaiya@gmail.com>
 `,
+		name,
 		Version,
 		runtime.Compiler,
 		runtime.Version())

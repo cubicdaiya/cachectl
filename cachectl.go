@@ -18,7 +18,7 @@ func main() {
 	flag.Parse()
 
 	if *version {
-		cachectl.PrintCachectlVersion()
+		cachectl.PrintVersion(cachectl.Cachectl)
 		os.Exit(0)
 	}
 

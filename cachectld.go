@@ -3,9 +3,7 @@ package main
 import (
 	"./cachectl"
 	"flag"
-	"fmt"
 	"os"
-	"path/filepath"
 )
 
 func main() {
@@ -15,7 +13,7 @@ func main() {
 	flag.Parse()
 
 	if *version {
-		cachectl.PrintCachectlVersion()
+		cachectl.PrintVersion(cachectl.Cachectld)
 		os.Exit(0)
 	}
 
