@@ -57,6 +57,7 @@ func main() {
 
 	// Parse flags
 	version := flag.Bool("v", false, "show version")
+	confPath := flag.String("c", "", "configuration file for cachectld")
 	flag.Parse()
 
 	if *version {
@@ -65,7 +66,7 @@ func main() {
 	}
 
 	var confCachectld cachectl.ConfToml
-	err := cachectl.LoadConf("conf/cachectld.toml", &confCachectld)
+	err := cachectl.LoadConf(*confPath, &confCachectld)
 	if err != nil {
 		panic(err.Error())
 	}
