@@ -1,6 +1,9 @@
 
 all: bin/cachectl bin/cachectld
 
+gom:
+	go get -u github.com/mattn/gom
+
 bundle:
 	gom install
 
