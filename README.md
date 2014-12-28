@@ -9,7 +9,9 @@
 ## Install
 
 ```bash
-go get -u github.com/cubicdaiya/cachectl
+git clone https://github.com/cubicdaiya/cachectl.git
+cd cachectl
+make
 ```
 
 ## Show Page Cache Stat For File
