@@ -4,10 +4,10 @@ all: bin/cachectl bin/cachectld
 bundle:
 	gom install
 
-bin/cachectl:
+bin/cachectl: cachectl.go cachectl/*.go
 	gom build -o bin/cachectl cachectl.go
 
-bin/cachectld:
+bin/cachectld: cachectld.go cachectl/*.go
 	gom build -o bin/cachectld cachectld.go
 
 fmt:

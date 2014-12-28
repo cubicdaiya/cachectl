@@ -44,7 +44,7 @@ func main() {
 					return nil
 				})
 			if err != nil {
-				fmt.Printf("failed to show stat for %s.", fi.Name())
+				fmt.Printf("failed to walk in %s.", fi.Name())
 				os.Exit(1)
 			}
 		} else {
@@ -67,7 +67,7 @@ func main() {
 				})
 
 			if err != nil {
-				fmt.Printf("failed to show stat for %s.", fi.Name())
+				fmt.Printf("failed to walk in %s.", fi.Name())
 				os.Exit(1)
 			}
 		} else {

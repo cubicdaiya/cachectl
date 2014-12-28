@@ -1,2 +1,3 @@
 bin/cachectl
 bin/cachectld
+Vagrantfile

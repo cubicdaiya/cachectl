@@ -1,0 +1,13 @@
+[[targets]]
+path = "/vagrant/cachectl.go"
+purge_interval = 30
+
+[[targets]]
+path = "/vagrant/cachectld.go"
+purge_interval = 20
+
+[[targets]]
+path = "/vagrant/cachectl"
+purge_interval = 5
+filter = "\\.go$"
+rate = 0.9
