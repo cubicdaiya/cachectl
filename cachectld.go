@@ -89,20 +89,18 @@ func main() {
 
 	exitchan := make(chan int)
 	go func() {
-		for {
-			s := <-sigchan
-			switch s {
-			case syscall.SIGHUP:
-				fallthrough
-			case syscall.SIGINT:
-				fallthrough
-			case syscall.SIGTERM:
-				fallthrough
-			case syscall.SIGQUIT:
-				exitchan <- 0
-			default:
-				exitchan <- 1
-			}
+		s := <-sigchan
+		switch s {
+		case syscall.SIGHUP:
+			fallthrough
+		case syscall.SIGINT:
+			fallthrough
+		case syscall.SIGTERM:
+			fallthrough
+		case syscall.SIGQUIT:
+			exitchan <- 0
+		default:
+			exitchan <- 1
 		}
 	}()
 
