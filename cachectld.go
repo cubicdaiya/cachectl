@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"syscall"
 	"time"
+	"log"
 )
 
 func scheduledPurgePages(target cachectl.SectionTarget) {
@@ -96,12 +97,12 @@ func main() {
 	var confCachectld cachectl.ConfToml
 	err := cachectl.LoadConf(*confPath, &confCachectld)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 	}
 
 	err = cachectl.ValidateConf(&confCachectld)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 	}
 
 	for _, target := range confCachectld.Targets {
