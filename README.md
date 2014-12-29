@@ -9,8 +9,6 @@
 ## Install
 
 ```bash
-git clone https://github.com/cubicdaiya/cachectl.git
-cd cachectl
 make gom
 make bundle
 make
