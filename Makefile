@@ -8,10 +8,10 @@ bundle:
 	gom install
 
 bin/cachectl: cachectl.go cachectl/*.go
-	gom build -o bin/cachectl cachectl.go
+	gom build -ldflags '-s -w' -o bin/cachectl cachectl.go
 
 bin/cachectld: cachectld.go cachectl/*.go
-	gom build -o bin/cachectld cachectld.go
+	gom build -ldflags '-s -w' -o bin/cachectld cachectld.go
 
 fmt:
 	go fmt ./...
