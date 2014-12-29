@@ -15,7 +15,7 @@ func main() {
 	op := flag.String("op", "stat", "operation(stat, del)")
 	fpath := flag.String("f", "", "target file path")
 	filter := flag.String("filter", "*", "filter pattern")
-	rate := flag.Float64("r", 1.0, "rate of page cache purged(0.0 <= r<= 1.0)")
+	rate := flag.Float64("r", 1.0, "rate of page cache purged(0.0 <= r <= 1.0)")
 	flag.Parse()
 
 	if *version {
