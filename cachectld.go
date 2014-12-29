@@ -53,6 +53,34 @@ func scheduledPurgePages(target cachectl.SectionTarget) {
 	}
 }
 
+func waitSignal() int {
+	sigchan := make(chan os.Signal, 1)
+	signal.Notify(sigchan,
+		syscall.SIGHUP,
+		syscall.SIGINT,
+		syscall.SIGTERM,
+		syscall.SIGQUIT)
+
+	var exitcode int
+
+	s := <-sigchan
+
+	switch s {
+	case syscall.SIGHUP:
+		fallthrough
+	case syscall.SIGINT:
+		fallthrough
+	case syscall.SIGTERM:
+		fallthrough
+	case syscall.SIGQUIT:
+		exitcode = 0
+	default:
+		exitcode = 1
+	}
+
+	return exitcode
+}
+
 func main() {
 
 	// Parse flags
@@ -80,30 +108,7 @@ func main() {
 		go scheduledPurgePages(target)
 	}
 
-	sigchan := make(chan os.Signal, 1)
-	signal.Notify(sigchan,
-		syscall.SIGHUP,
-		syscall.SIGINT,
-		syscall.SIGTERM,
-		syscall.SIGQUIT)
+	code := waitSignal()
 
-	exitchan := make(chan int)
-	go func() {
-		s := <-sigchan
-		switch s {
-		case syscall.SIGHUP:
-			fallthrough
-		case syscall.SIGINT:
-			fallthrough
-		case syscall.SIGTERM:
-			fallthrough
-		case syscall.SIGQUIT:
-			exitchan <- 0
-		default:
-			exitchan <- 1
-		}
-	}()
-
-	code := <-exitchan
 	os.Exit(code)
 }
