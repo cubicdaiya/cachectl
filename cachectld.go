@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-func ScheduledPurgePages(target cachectl.SectionTarget) {
+func scheduledPurgePages(target cachectl.SectionTarget) {
 
 	re := regexp.MustCompile(target.Filter)
 
@@ -77,7 +77,7 @@ func main() {
 	}
 
 	for _, target := range confCachectld.Targets {
-		go ScheduledPurgePages(target)
+		go scheduledPurgePages(target)
 	}
 
 	sigchan := make(chan os.Signal, 1)
