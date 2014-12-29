@@ -5,7 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"path/filepath"
+	"regexp"
 )
 
 func main() {
@@ -14,6 +14,7 @@ func main() {
 	version := flag.Bool("v", false, "show version")
 	op := flag.String("op", "stat", "operation(stat, del)")
 	fpath := flag.String("f", "", "target file path")
+	filter := flag.String("filter", "*", "filter pattern")
 	rate := flag.Float64("r", 1.0, "rate of page cache purged(0.0 <= r<= 1.0)")
 	flag.Parse()
 
@@ -33,16 +34,15 @@ func main() {
 		os.Exit(1)
 	}
 
+	if *filter == "*" {
+		*filter = ".*"
+	}
+
+	re := regexp.MustCompile(*filter)
+
 	if *op == "stat" {
 		if fi.IsDir() {
-			err := filepath.Walk(*fpath,
-				func(path string, info os.FileInfo, err error) error {
-					if !info.Mode().IsRegular() {
-						return nil
-					}
-					cachectl.PrintPagesStat(path, info.Size())
-					return nil
-				})
+			err := cachectl.WalkPrintPagesStat(*fpath)
 			if err != nil {
 				fmt.Printf("failed to walk in %s.", fi.Name())
 				os.Exit(1)
@@ -57,15 +57,7 @@ func main() {
 		}
 	} else {
 		if fi.IsDir() {
-			err := filepath.Walk(*fpath,
-				func(path string, info os.FileInfo, err error) error {
-					if !info.Mode().IsRegular() {
-						return nil
-					}
-					cachectl.RunPurgePages(path, info.Size(), *rate)
-					return nil
-				})
-
+			err := cachectl.WalkPurgePages(*fpath, re, *rate)
 			if err != nil {
 				fmt.Printf("failed to walk in %s.", fi.Name())
 				os.Exit(1)
@@ -79,5 +71,4 @@ func main() {
 			cachectl.RunPurgePages(*fpath, fi.Size(), *rate)
 		}
 	}
-
 }

@@ -4,13 +4,12 @@ import (
 	"./cachectl"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"regexp"
 	"syscall"
 	"time"
-	"log"
 )
 
 func scheduledPurgePages(target cachectl.SectionTarget) {
@@ -28,18 +27,7 @@ func scheduledPurgePages(target cachectl.SectionTarget) {
 		}
 
 		if fi.IsDir() {
-			err := filepath.Walk(target.Path,
-				func(path string, info os.FileInfo, err error) error {
-					if !info.Mode().IsRegular() {
-						return nil
-					}
-
-					if re.MatchString(path) {
-						cachectl.RunPurgePages(path, info.Size(), target.Rate)
-					}
-					return nil
-				})
-
+			err := cachectl.WalkPurgePages(target.Path, re, target.Rate)
 			if err != nil {
 				fmt.Printf("failed to walk in %s.", fi.Name())
 			}
