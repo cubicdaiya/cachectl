@@ -47,7 +47,7 @@ int activePages(const char *path)
     i = 0;
     j = 0;
     for (i = 0; i < pages; i++) {
-        if(pageinfo[i++] & 1) {
+        if(pageinfo[i] & 1) {
             j++;
         }
     }
