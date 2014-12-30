@@ -61,4 +61,5 @@ func RunPurgePages(path string, fsize int64, rate float64) {
 
 	fmt.Printf("\nAfter purging %s 's page cache\n\n", path)
 	PrintPagesStat(path, fsize)
+	fmt.Println()
 }
