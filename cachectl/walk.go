@@ -6,13 +6,16 @@ import (
 	"regexp"
 )
 
-func WalkPrintPagesStat(path string) error {
+func WalkPrintPagesStat(path string, re *regexp.Regexp) error {
 	return filepath.Walk(path,
 		func(path string, info os.FileInfo, err error) error {
 			if !info.Mode().IsRegular() {
 				return nil
 			}
-			PrintPagesStat(path, info.Size())
+
+			if re.MatchString(path) {
+				PrintPagesStat(path, info.Size())
+			}
 			return nil
 		})
 }

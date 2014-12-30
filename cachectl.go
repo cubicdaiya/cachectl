@@ -42,7 +42,7 @@ func main() {
 
 	if *op == "stat" {
 		if fi.IsDir() {
-			err := cachectl.WalkPrintPagesStat(*fpath)
+			err := cachectl.WalkPrintPagesStat(*fpath, re)
 			if err != nil {
 				fmt.Printf("failed to walk in %s.", fi.Name())
 				os.Exit(1)
