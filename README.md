@@ -68,3 +68,10 @@ purge_interval = 5
 filter = "\\.go$"
 rate = 0.9
 ```
+
+## License
+
+Copyright 2014 Tatsuhiko Kubo
+
+
+Licensed under the MIT License.
