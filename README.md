@@ -6,7 +6,7 @@
 
 `posix_fadvise` is required.
 
-## Install
+## Build
 
 ```bash
 make gom
