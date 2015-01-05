@@ -52,6 +52,7 @@ int activePages(const char *path)
         }
     }
 
+    free(pageinfo);
     munmap(m, st.st_size);
 
     return j;
