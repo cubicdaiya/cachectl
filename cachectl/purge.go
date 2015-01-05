@@ -38,6 +38,7 @@ import "C"
 import (
 	"errors"
 	"fmt"
+	"unsafe"
 )
 
 func purgePages(fpath string, fsize int64, rate float64) error {
@@ -45,7 +46,9 @@ func purgePages(fpath string, fsize int64, rate float64) error {
 		return errors.New(fmt.Sprintf("%f: rate should be less than 1.0\n", rate))
 	}
 
-	result := C.fadvise(C.CString(fpath), C.float(rate))
+	cs := C.CString(fpath)
+	defer C.free(unsafe.Pointer(cs))
+	result := C.fadvise(cs, C.float(rate))
 	if result == -1 {
 		return errors.New(fmt.Sprintf("failed to purge page cache for %s", fpath))
 	}

@@ -62,8 +62,13 @@ error:
 }
 */
 import "C"
+import (
+	"unsafe"
+)
 
 func activePages(path string) int {
-	result := C.activePages(C.CString(path))
+	cs := C.CString(path)
+	result := C.activePages(cs)
+	C.free(unsafe.Pointer(cs))
 	return int(result)
 }
