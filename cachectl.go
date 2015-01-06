@@ -39,6 +39,7 @@ func main() {
 	}
 
 	re := regexp.MustCompile(*filter)
+	verbose := true
 
 	if *op == "stat" {
 		if fi.IsDir() {
@@ -57,7 +58,7 @@ func main() {
 		}
 	} else {
 		if fi.IsDir() {
-			err := cachectl.WalkPurgePages(*fpath, re, *rate)
+			err := cachectl.WalkPurgePages(*fpath, re, *rate, verbose)
 			if err != nil {
 				fmt.Printf("failed to walk in %s.", fi.Name())
 				os.Exit(1)
@@ -68,7 +69,7 @@ func main() {
 				os.Exit(1)
 			}
 
-			cachectl.RunPurgePages(*fpath, fi.Size(), *rate)
+			cachectl.RunPurgePages(*fpath, fi.Size(), *rate, verbose)
 		}
 	}
 }

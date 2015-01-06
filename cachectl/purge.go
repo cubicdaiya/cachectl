@@ -56,13 +56,24 @@ func purgePages(fpath string, fsize int64, rate float64) error {
 	return nil
 }
 
-func RunPurgePages(path string, fsize int64, rate float64) {
-	fmt.Printf("Before purging %s 's page cache\n\n", path)
-	PrintPagesStat(path, fsize)
+func RunPurgePages(path string, fsize int64, rate float64, verbose bool) error {
+	if verbose {
+		fmt.Printf("Before purging %s 's page cache\n\n", path)
+		PrintPagesStat(path, fsize)
+	} else {
+		fmt.Printf("purging %s 's page cache\n", path)
+	}
 
-	purgePages(path, fsize, rate)
+	err := purgePages(path, fsize, rate)
+	if err != nil {
+		return err
+	}
 
-	fmt.Printf("\nAfter purging %s 's page cache\n\n", path)
-	PrintPagesStat(path, fsize)
-	fmt.Println()
+	if verbose {
+		fmt.Printf("\nAfter purging %s 's page cache\n\n", path)
+		PrintPagesStat(path, fsize)
+		fmt.Println()
+	}
+
+	return nil
 }

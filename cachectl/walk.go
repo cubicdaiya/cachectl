@@ -20,7 +20,7 @@ func WalkPrintPagesStat(path string, re *regexp.Regexp) error {
 		})
 }
 
-func WalkPurgePages(path string, re *regexp.Regexp, rate float64) error {
+func WalkPurgePages(path string, re *regexp.Regexp, rate float64, verbose bool) error {
 	return filepath.Walk(path,
 		func(path string, info os.FileInfo, err error) error {
 			if !info.Mode().IsRegular() {
@@ -28,7 +28,7 @@ func WalkPurgePages(path string, re *regexp.Regexp, rate float64) error {
 			}
 
 			if re.MatchString(path) {
-				RunPurgePages(path, info.Size(), rate)
+				RunPurgePages(path, info.Size(), rate, verbose)
 			}
 			return nil
 		})

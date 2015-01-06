@@ -15,6 +15,7 @@ import (
 func scheduledPurgePages(target cachectl.SectionTarget) {
 
 	re := regexp.MustCompile(target.Filter)
+	verbose := false
 
 	for {
 		timer := time.NewTimer(time.Second * time.Duration(target.PurgeInterval))
@@ -27,7 +28,7 @@ func scheduledPurgePages(target cachectl.SectionTarget) {
 		}
 
 		if fi.IsDir() {
-			err := cachectl.WalkPurgePages(target.Path, re, target.Rate)
+			err := cachectl.WalkPurgePages(target.Path, re, target.Rate, verbose)
 			if err != nil {
 				fmt.Printf("failed to walk in %s.", fi.Name())
 			}
@@ -37,7 +38,10 @@ func scheduledPurgePages(target cachectl.SectionTarget) {
 				continue
 			}
 
-			cachectl.RunPurgePages(target.Path, fi.Size(), target.Rate)
+			err := cachectl.RunPurgePages(target.Path, fi.Size(), target.Rate, verbose)
+			if err != nil {
+				fmt.Printf("%s: %s", fi.Name(), err.Error())
+			}
 		}
 	}
 }
