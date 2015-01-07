@@ -4,6 +4,7 @@ import (
 	"./cachectl"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"regexp"
 )
@@ -25,14 +26,13 @@ func main() {
 	}
 
 	if *fpath == "" {
-		fmt.Println("target file path is empty.")
+		log.Println("target file path is empty.")
 		os.Exit(0)
 	}
 
 	fi, err := os.Stat(*fpath)
 	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
+		log.Fatal(err.Error())
 	}
 
 	if *filter == "*" {
@@ -45,13 +45,11 @@ func main() {
 		if fi.IsDir() {
 			err := cachectl.WalkPrintPagesStat(*fpath, re)
 			if err != nil {
-				fmt.Printf("failed to walk in %s.", fi.Name())
-				os.Exit(1)
+				log.Fatal(fmt.Sprintf("failed to walk in %s.", fi.Name()))
 			}
 		} else {
 			if !fi.Mode().IsRegular() {
-				fmt.Printf("%s is not regular file\n", fi.Name())
-				os.Exit(1)
+				log.Fatal(fmt.Sprintf("%s is not regular file", fi.Name()))
 			}
 
 			cachectl.PrintPagesStat(*fpath, fi.Size())
@@ -60,13 +58,11 @@ func main() {
 		if fi.IsDir() {
 			err := cachectl.WalkPurgePages(*fpath, re, *rate, *verbose)
 			if err != nil {
-				fmt.Printf("failed to walk in %s.", fi.Name())
-				os.Exit(1)
+				log.Fatal(fmt.Sprintf("failed to walk in %s.", fi.Name()))
 			}
 		} else {
 			if !fi.Mode().IsRegular() {
-				fmt.Printf("%s is not regular file\n", fi.Name())
-				os.Exit(1)
+				log.Fatal(fmt.Sprintf("%s is not regular file", fi.Name()))
 			}
 
 			cachectl.RunPurgePages(*fpath, fi.Size(), *rate, *verbose)

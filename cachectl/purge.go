@@ -38,6 +38,7 @@ import "C"
 import (
 	"errors"
 	"fmt"
+	"log"
 	"unsafe"
 )
 
@@ -61,7 +62,7 @@ func RunPurgePages(path string, fsize int64, rate float64, verbose bool) error {
 		fmt.Printf("Before purging %s 's page cache\n\n", path)
 		PrintPagesStat(path, fsize)
 	} else {
-		fmt.Printf("purging %s 's page cache\n", path)
+		log.Printf("purging %s 's page cache\n", path)
 	}
 
 	err := purgePages(path, fsize, rate)

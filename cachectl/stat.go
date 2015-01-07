@@ -1,7 +1,7 @@
 package cachectl
 
 import (
-	"fmt"
+	"log"
 	"os"
 )
 
@@ -9,7 +9,7 @@ func PrintPagesStat(fpath string, fsize int64) {
 	pagesize := os.Getpagesize()
 	pagesizeKB := pagesize / 1024
 	if fsize == 0 {
-		fmt.Printf("%s 's pages in cache: %d/%d (%.1f%%) [filesize=%.1fK, pagesize=%dK]\n", fpath, 0, 0, 0.0, 0.0, pagesizeKB)
+		log.Printf("%s 's pages in cache: %d/%d (%.1f%%) [filesize=%.1fK, pagesize=%dK]\n", fpath, 0, 0, 0.0, 0.0, pagesizeKB)
 		return
 	}
 
@@ -24,6 +24,6 @@ func PrintPagesStat(fpath string, fsize int64) {
 		activeRate = 100.0 * (float64(pagesActive) / float64(pages))
 	}
 	filesizeKB := float64(fsize) / 1024
-	fmt.Printf("%s 's pages in cache: %d/%d (%.1f%%)  [filesize=%.1fK, pagesize=%dK]\n",
+	log.Printf("%s 's pages in cache: %d/%d (%.1f%%)  [filesize=%.1fK, pagesize=%dK]\n",
 		fpath, pagesActive, pages, activeRate, filesizeKB, pagesizeKB)
 }
