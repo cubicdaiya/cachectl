@@ -71,7 +71,7 @@ rate = 0.9
 
 ## License
 
-Copyright 2014 Tatsuhiko Kubo
+Copyright 2014-2015 Tatsuhiko Kubo
 
 
 Licensed under the MIT License.
