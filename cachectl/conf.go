@@ -1,10 +1,9 @@
 package cachectl
 
 import (
-	"errors"
 	"github.com/BurntSushi/toml"
+	"log"
 	"os"
-	"fmt"
 )
 
 type ConfToml struct {
@@ -28,10 +27,12 @@ func ValidateConf(confToml *ConfToml) error {
 			confToml.Targets[i].Filter = ".*"
 		}
 		if target.Rate < 0 || target.Rate > 1.0 {
-			return errors.New(fmt.Sprintf("target: %s, rate is invalid: %f", target.Path, target.Rate))
+			log.Printf("[warning] target: %s, rate is invalid: %f. zero will be assigned.", target.Path, target.Rate)
+			confToml.Targets[i].Rate = 0
 		}
 		if target.PurgeInterval == 0 {
-			return errors.New(fmt.Sprintf("target: %s, purge_interval is invalid: %d, or not set", target.Path, target.PurgeInterval))
+			log.Printf("[warning] target: %s, purge_interval is invalid: %d, or not set. 3600 will be assigned.", target.Path, target.PurgeInterval)
+			confToml.Targets[i].PurgeInterval = 3600
 		}
 	}
 	return nil
