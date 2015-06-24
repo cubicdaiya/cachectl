@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/BurntSushi/toml"
 	"os"
+	"fmt"
 )
 
 type ConfToml struct {
@@ -27,7 +28,10 @@ func ValidateConf(confToml *ConfToml) error {
 			confToml.Targets[i].Filter = ".*"
 		}
 		if target.Rate < 0 || target.Rate > 1.0 {
-			return errors.New("invalid rate")
+			return errors.New(fmt.Sprintf("target: %s, rate is invalid: %f, or not set", target.Path, target.Rate))
+		}
+		if target.PurgeInterval == 0 {
+			return errors.New(fmt.Sprintf("target: %s, purge_interval is invalid: %d, or not set", target.Path, target.PurgeInterval))
 		}
 	}
 	return nil
