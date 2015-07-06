@@ -3,6 +3,7 @@ package main
 import (
 	"./cachectl"
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -11,36 +12,44 @@ import (
 	"time"
 )
 
-func scheduledPurgePages(target cachectl.SectionTarget) {
+func purgePages(target *cachectl.SectionTarget, re *regexp.Regexp) error {
+	fi, err := os.Stat(target.Path)
+	if err != nil {
+		return err
+	}
+
+	verbose := false
+
+	if fi.IsDir() {
+		err := cachectl.WalkPurgePages(target.Path, re, target.Rate, verbose)
+		if err != nil {
+			return fmt.Errorf("failed to walk in %s.", fi.Name())
+		}
+	} else {
+		if !fi.Mode().IsRegular() {
+			return fmt.Errorf("%s is not regular file", fi.Name())
+		}
+
+		err := cachectl.RunPurgePages(target.Path, fi.Size(), target.Rate, verbose)
+		if err != nil {
+			return fmt.Errorf("%s: %s", fi.Name(), err.Error())
+		}
+	}
+
+	return nil
+}
+
+func scheduledPurgePages(target *cachectl.SectionTarget) {
 
 	re := regexp.MustCompile(target.Filter)
-	verbose := false
 
 	for {
 		timer := time.NewTimer(time.Second * time.Duration(target.PurgeInterval))
 		<-timer.C
 
-		fi, err := os.Stat(target.Path)
+		err := purgePages(target, re)
 		if err != nil {
 			log.Println(err.Error())
-			continue
-		}
-
-		if fi.IsDir() {
-			err := cachectl.WalkPurgePages(target.Path, re, target.Rate, verbose)
-			if err != nil {
-				log.Printf("failed to walk in %s.", fi.Name())
-			}
-		} else {
-			if !fi.Mode().IsRegular() {
-				log.Printf("%s is not regular file", fi.Name())
-				continue
-			}
-
-			err := cachectl.RunPurgePages(target.Path, fi.Size(), target.Rate, verbose)
-			if err != nil {
-				log.Printf("%s: %s", fi.Name(), err.Error())
-			}
 		}
 	}
 }
