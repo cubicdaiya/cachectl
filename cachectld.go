@@ -57,6 +57,7 @@ func scheduledPurgePages(target *cachectl.SectionTarget) {
 func waitSignal() int {
 	sigchan := make(chan os.Signal, 1)
 	signal.Notify(sigchan,
+		syscall.SIGUSR1,
 		syscall.SIGHUP,
 		syscall.SIGINT,
 		syscall.SIGTERM,
@@ -67,6 +68,9 @@ func waitSignal() int {
 	s := <-sigchan
 
 	switch s {
+	case syscall.SIGUSR1:
+		// not exit
+		exitcode = -1
 	case syscall.SIGHUP:
 		fallthrough
 	case syscall.SIGINT:
@@ -106,10 +110,24 @@ func main() {
 	}
 
 	for _, target := range confCachectld.Targets {
-		go scheduledPurgePages(target)
+		go scheduledPurgePages(&target)
 	}
 
+waitSignalLoop:
 	code := waitSignal()
+
+	// When received SIGUSR1,
+	// cachectld runs purgePages().
+	if code == -1 {
+		for _, target := range confCachectld.Targets {
+			re := regexp.MustCompile(target.Filter)
+			err := purgePages(&target, re)
+			if err != nil {
+				log.Println(err.Error())
+			}
+		}
+		goto waitSignalLoop
+	}
 
 	os.Exit(code)
 }
