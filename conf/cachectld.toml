@@ -8,6 +8,6 @@ purge_interval = 20
 
 [[targets]]
 path = "/vagrant/cachectl"
-purge_interval = 5
+purge_interval = -1
 filter = "\\.go$"
 rate = 0.9

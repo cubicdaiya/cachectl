@@ -41,6 +41,11 @@ func purgePages(target cachectl.SectionTarget, re *regexp.Regexp) error {
 
 func scheduledPurgePages(target cachectl.SectionTarget) {
 
+	if target.PurgeInterval == -1 {
+		log.Printf("cachectld runs for %s when only received USR1\n", target.Path)
+		return
+	}
+
 	re := regexp.MustCompile(target.Filter)
 
 	for {
