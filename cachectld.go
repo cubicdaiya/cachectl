@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-func purgePages(target *cachectl.SectionTarget, re *regexp.Regexp) error {
+func purgePages(target cachectl.SectionTarget, re *regexp.Regexp) error {
 	fi, err := os.Stat(target.Path)
 	if err != nil {
 		return err
@@ -39,7 +39,7 @@ func purgePages(target *cachectl.SectionTarget, re *regexp.Regexp) error {
 	return nil
 }
 
-func scheduledPurgePages(target *cachectl.SectionTarget) {
+func scheduledPurgePages(target cachectl.SectionTarget) {
 
 	re := regexp.MustCompile(target.Filter)
 
@@ -110,7 +110,7 @@ func main() {
 	}
 
 	for _, target := range confCachectld.Targets {
-		go scheduledPurgePages(&target)
+		go scheduledPurgePages(target)
 	}
 
 waitSignalLoop:
@@ -121,7 +121,7 @@ waitSignalLoop:
 	if code == -1 {
 		for _, target := range confCachectld.Targets {
 			re := regexp.MustCompile(target.Filter)
-			err := purgePages(&target, re)
+			err := purgePages(target, re)
 			if err != nil {
 				log.Println(err.Error())
 			}
