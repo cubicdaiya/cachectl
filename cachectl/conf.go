@@ -12,7 +12,7 @@ type ConfToml struct {
 
 type SectionTarget struct {
 	Path          string  `toml:"path"`
-	PurgeInterval uint64  `toml:"purge_interval"`
+	PurgeInterval int     `toml:"purge_interval"`
 	Filter        string  `toml:"filter"`
 	Rate          float64 `toml:"rate"`
 }
