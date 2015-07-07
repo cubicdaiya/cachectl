@@ -47,7 +47,7 @@ A configuration for `cachectld` has one or multiple targets.
 |name          |type  |description                                  |default|note                                           |
 |--------------|------|---------------------------------------------|-------|-----------------------------------------------|
 |path          |string|target file path                             |       |directory or file path                         |
-|purge_interval|int   |interval for purging page cache for file     |0      |unit is second                                 |
+|purge_interval|int   |interval for purging page cache for file     |0      |unit is second. if -1 is set, purge does not run.|
 |filter        |string|filtering pattern string for target file path|.*     |regular expression with golang's regexp package|
 |rate          |float |rate of puring page cache for file           |1.0    |0.0 < rate <= 1.0                              |
 
@@ -68,6 +68,16 @@ purge_interval = 5
 filter = "\\.go$"
 rate = 0.9
 ```
+
+## Signal trigger
+
+You can trigger with `SIGUSR1` to run the targets for `cachectld`.
+
+```
+$ pkill -USR1 cachectld
+```
+
+When `SIGUSR1` is received, `cachectld` runs all targets including the targets `purge_interval` is set -1.
 
 ## License
 
