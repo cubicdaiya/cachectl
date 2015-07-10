@@ -3,7 +3,6 @@ package main
 import (
 	"./cachectl"
 	"flag"
-	"fmt"
 	"log"
 	"os"
 	"regexp"
@@ -45,11 +44,11 @@ func main() {
 		if fi.IsDir() {
 			err := cachectl.WalkPrintPagesStat(*fpath, re)
 			if err != nil {
-				log.Fatal(fmt.Sprintf("failed to walk in %s.", fi.Name()))
+				log.Fatalf("failed to walk in %s.", fi.Name())
 			}
 		} else {
 			if !fi.Mode().IsRegular() {
-				log.Fatal(fmt.Sprintf("%s is not regular file", fi.Name()))
+				log.Fatalf("%s is not regular file", fi.Name())
 			}
 
 			cachectl.PrintPagesStat(*fpath, fi.Size())
@@ -58,11 +57,11 @@ func main() {
 		if fi.IsDir() {
 			err := cachectl.WalkPurgePages(*fpath, re, *rate, *verbose)
 			if err != nil {
-				log.Fatal(fmt.Sprintf("failed to walk in %s.", fi.Name()))
+				log.Fatalf("failed to walk in %s.", fi.Name())
 			}
 		} else {
 			if !fi.Mode().IsRegular() {
-				log.Fatal(fmt.Sprintf("%s is not regular file", fi.Name()))
+				log.Fatal("%s is not regular file", fi.Name())
 			}
 
 			err := cachectl.RunPurgePages(*fpath, fi.Size(), *rate, *verbose)
