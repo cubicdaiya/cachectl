@@ -107,12 +107,12 @@ func main() {
 	var confCachectld cachectl.ConfToml
 	err := cachectl.LoadConf(*confPath, &confCachectld)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal(err)
 	}
 
 	err = cachectl.ValidateConf(&confCachectld)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal(err)
 	}
 
 	for _, target := range confCachectld.Targets {

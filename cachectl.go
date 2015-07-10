@@ -31,7 +31,7 @@ func main() {
 
 	fi, err := os.Stat(*fpath)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal(err)
 	}
 
 	if *filter == "*" {
@@ -66,7 +66,7 @@ func main() {
 
 			err := cachectl.RunPurgePages(*fpath, fi.Size(), *rate, *verbose)
 			if err != nil {
-				log.Fatal(err.Error())
+				log.Fatal(err)
 			}
 		}
 	}
