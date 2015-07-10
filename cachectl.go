@@ -65,7 +65,10 @@ func main() {
 				log.Fatal(fmt.Sprintf("%s is not regular file", fi.Name()))
 			}
 
-			cachectl.RunPurgePages(*fpath, fi.Size(), *rate, *verbose)
+			err := cachectl.RunPurgePages(*fpath, fi.Size(), *rate, *verbose)
+			if err != nil {
+				log.Fatal(err.Error())
+			}
 		}
 	}
 }

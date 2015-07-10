@@ -1,6 +1,7 @@
 package cachectl
 
 import (
+	"log"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -28,7 +29,10 @@ func WalkPurgePages(path string, re *regexp.Regexp, rate float64, verbose bool) 
 			}
 
 			if re.MatchString(path) {
-				RunPurgePages(path, info.Size(), rate, verbose)
+				err := RunPurgePages(path, info.Size(), rate, verbose)
+				if err != nil {
+					log.Println(err.Error())
+				}
 			}
 			return nil
 		})
