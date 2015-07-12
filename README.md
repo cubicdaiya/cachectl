@@ -71,7 +71,7 @@ rate = 0.9
 
 ## Signal trigger
 
-You can trigger with `SIGUSR1` to run the targets for `cachectld`.
+From `v0.3.0`, you can trigger with `SIGUSR1` to run the targets for `cachectld`.
 
 ```
 $ pkill -USR1 cachectld
