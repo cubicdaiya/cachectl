@@ -55,7 +55,7 @@ func scheduledPurgePages(target cachectl.SectionTarget) {
 
 		err := purgePages(target, re)
 		if err != nil {
-			log.Println(err.Error())
+			log.Println(err)
 		}
 	}
 }
@@ -129,7 +129,7 @@ waitSignalLoop:
 			re := regexp.MustCompile(target.Filter)
 			err := purgePages(target, re)
 			if err != nil {
-				log.Println(err.Error())
+				log.Println(err)
 			}
 		}
 		goto waitSignalLoop
