@@ -125,6 +125,7 @@ waitSignalLoop:
 	// When received SIGUSR1,
 	// cachectld runs purgePages().
 	if code == -1 {
+		log.Println("Run all targets with SIGUSR1.")
 		for _, target := range confCachectld.Targets {
 			re := regexp.MustCompile(target.Filter)
 			err := purgePages(target, re)
