@@ -49,7 +49,7 @@ A configuration for `cachectld` has one or multiple targets.
 |path          |string|target file path                             |       |directory or file path                           |
 |purge_interval|int   |interval for purging page cache for file     |3600   |unit is second. if -1 is set, purge does not run.|
 |filter        |string|filtering pattern string for target file path|.*     |regular expression with golang's regexp package  |
-|rate          |float |rate of puring page cache for file           |0.0    |0.0 and 1.0 is same behavior (0.0 <= rate <= 1.0)|
+|rate          |float |rate of purging page cache for file          |0.0    |0.0 and 1.0 is same behavior (0.0 <= rate <= 1.0)|
 
 A example is below.
 
