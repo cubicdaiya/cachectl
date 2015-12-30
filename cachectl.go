@@ -25,8 +25,8 @@ func main() {
 	}
 
 	if *fpath == "" {
-		log.Println("target file path is empty.")
-		os.Exit(0)
+		flag.Usage()
+		return
 	}
 
 	fi, err := os.Stat(*fpath)
