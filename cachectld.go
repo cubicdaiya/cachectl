@@ -101,7 +101,7 @@ func main() {
 
 	if *version {
 		cachectl.PrintVersion(cachectl.Cachectld)
-		os.Exit(0)
+		return
 	}
 
 	var confCachectld cachectl.ConfToml

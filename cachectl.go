@@ -21,7 +21,7 @@ func main() {
 
 	if *version {
 		cachectl.PrintVersion(cachectl.Cachectl)
-		os.Exit(0)
+		return
 	}
 
 	if *fpath == "" {
