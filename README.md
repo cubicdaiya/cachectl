@@ -81,7 +81,7 @@ When `SIGUSR1` is received, `cachectld` runs all targets including the targets `
 
 ## License
 
-Copyright 2014-2015 Tatsuhiko Kubo
+Copyright 2014-2016 Tatsuhiko Kubo
 
 
 Licensed under the MIT License.
