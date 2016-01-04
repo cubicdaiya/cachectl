@@ -1,8 +1,8 @@
 package main
 
 import (
-	"./cachectl"
 	"flag"
+	"github.com/cubicdaiya/cachectl/cachectl"
 	"log"
 	"os"
 	"regexp"

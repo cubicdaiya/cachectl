@@ -1,9 +1,9 @@
 package main
 
 import (
-	"./cachectl"
 	"flag"
 	"fmt"
+	"github.com/cubicdaiya/cachectl/cachectl"
 	"log"
 	"os"
 	"os/signal"

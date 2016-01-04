@@ -6,12 +6,10 @@
 
 `posix_fadvise` is required.
 
-## Build
+## Installation
 
-```bash
-make gom
-make bundle
-make
+```
+go get -u github.com/cubicdaiya/cachectl/...
 ```
 
 ## Show Page Cache Stat For File
