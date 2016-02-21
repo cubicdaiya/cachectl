@@ -9,7 +9,8 @@ func PrintPagesStat(fpath string, fsize int64) {
 	pagesize := os.Getpagesize()
 	pagesizeKB := pagesize / 1024
 	if fsize == 0 {
-		log.Printf("%s 's pages in cache: %d/%d (%.1f%%) [filesize=%.1fK, pagesize=%dK]\n", fpath, 0, 0, 0.0, 0.0, pagesizeKB)
+		log.Printf("%s 's pages in cache: %d/%d (%.1f%%) [filesize=%.1fK, pagesize=%dK]\n",
+			fpath, 0, 0, 0.0, 0.0, pagesizeKB)
 		return
 	}
 
