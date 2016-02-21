@@ -12,13 +12,13 @@
 go get -u github.com/cubicdaiya/cachectl/...
 ```
 
-## Show Page Cache Stat For File
+## Show page cache stat for file
 
 ```
 cachectl -f /var/log/access_log
 ```
 
-## Purge Page Cache For File
+## Purge page cache for file
 
 ```
 cachectl -op purge -f /var/log/access_log
