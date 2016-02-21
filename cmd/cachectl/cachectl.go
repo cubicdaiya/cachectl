@@ -2,10 +2,11 @@ package main
 
 import (
 	"flag"
-	"github.com/cubicdaiya/cachectl/cachectl"
 	"log"
 	"os"
 	"regexp"
+
+	"github.com/cubicdaiya/cachectl/cachectl"
 )
 
 func main() {

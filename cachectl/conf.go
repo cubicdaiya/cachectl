@@ -1,9 +1,10 @@
 package cachectl
 
 import (
-	"github.com/BurntSushi/toml"
 	"log"
 	"os"
+
+	"github.com/BurntSushi/toml"
 )
 
 type ConfToml struct {

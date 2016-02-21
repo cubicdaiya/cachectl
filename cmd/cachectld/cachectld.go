@@ -3,13 +3,14 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/cubicdaiya/cachectl/cachectl"
 	"log"
 	"os"
 	"os/signal"
 	"regexp"
 	"syscall"
 	"time"
+
+	"github.com/cubicdaiya/cachectl/cachectl"
 )
 
 func purgePages(target cachectl.SectionTarget, re *regexp.Regexp) error {
