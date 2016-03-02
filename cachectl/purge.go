@@ -44,7 +44,7 @@ import (
 
 func purgePages(fpath string, fsize int64, rate float64) error {
 	if rate < 0.0 || rate > 1.0 {
-		return fmt.Errorf("%.1f: rate should be less than 1.0\n", rate)
+		return fmt.Errorf("%.1f: rate should be over 0.0 and less than 1.0\n", rate)
 	}
 
 	cs := C.CString(fpath)
