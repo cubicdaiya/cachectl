@@ -12,6 +12,8 @@
 go get -u github.com/cubicdaiya/cachectl/...
 ```
 
+If you don't have go-runtime, you may download the binary from [here](https://github.com/cubicdaiya/cachectl/releases).
+
 ## Show page cache stat for file
 
 ```
