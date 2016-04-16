@@ -1,2 +1,0 @@
-gom 'github.com/cubicdaiya/cachectl/cachectl'
-gom 'github.com/BurntSushi/toml', :commit => '3883ac1ce943878302255f538fce319d23226223'

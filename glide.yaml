@@ -1,0 +1,4 @@
+package: github.com/cubicdaiya/cachectl
+import:
+- package: github.com/BurntSushi/toml
+  version: v0.2.0
