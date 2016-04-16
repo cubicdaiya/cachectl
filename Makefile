@@ -1,4 +1,4 @@
-VERSION=0.3.3
+VERSION=0.3.4
 TARGETS_NOVENDOR=$(shell glide novendor)
 
 all: bin/cachectl bin/cachectld
