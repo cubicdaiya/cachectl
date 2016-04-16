@@ -20,7 +20,7 @@ bin/cachectld: cmd/cachectld/cachectld.go cachectl/*.go
 	GO15VENDOREXPERIMENT=1 go build $(GOFLAGS) -o bin/cachectld github.com/cubicdaiya/cachectl/cmd/cachectld
 
 fmt:
-	go fmt ./...
+	@echo $(TARGETS_NOVENDOR) | xargs go fmt
 
 clean:
 	rm -rf bin/*
