@@ -14,10 +14,10 @@ bundle:
 	glide install
 
 bin/cachectl: cmd/cachectl/cachectl.go cachectl/*.go
-	GO15VENDOREXPERIMENT=1 go build $(GOFLAGS) -o bin/cachectl github.com/cubicdaiya/cachectl/cmd/cachectl
+	GO15VENDOREXPERIMENT=1 go build $(GOFLAGS) -o bin/cachectl cmd/cachectl/cachectl.go
 
 bin/cachectld: cmd/cachectld/cachectld.go cachectl/*.go
-	GO15VENDOREXPERIMENT=1 go build $(GOFLAGS) -o bin/cachectld github.com/cubicdaiya/cachectl/cmd/cachectld
+	GO15VENDOREXPERIMENT=1 go build $(GOFLAGS) -o bin/cachectld cmd/cachectld/cachectld.go
 
 fmt:
 	@echo $(TARGETS_NOVENDOR) | xargs go fmt
