@@ -3,6 +3,7 @@ package cachectl
 import (
 	"log"
 	"os"
+	"regexp"
 
 	"github.com/BurntSushi/toml"
 )
@@ -26,6 +27,11 @@ func ValidateConf(confToml *ConfToml) error {
 		}
 		if target.Filter == "" || target.Filter == "*" {
 			confToml.Targets[i].Filter = ".*"
+		}
+		if _, err := regexp.Compile(target.Filter); err != nil {
+			log.Printf("[critical] target: %s, filter is invalid: %s.",
+				target.Path, target.Filter)
+			return err
 		}
 		if target.Rate < 0 || target.Rate > 1.0 {
 			log.Printf("[warning] target: %s, rate is invalid: %f. zero will be assigned.",
