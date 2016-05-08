@@ -48,7 +48,12 @@ func scheduledPurgePages(target cachectl.SectionTarget, purgeOnStart bool) {
 		return
 	}
 
-	re := regexp.MustCompile(target.Filter)
+	re, err := regexp.Compile(target.Filter)
+	if err != nil {
+		log.Printf("target: %s, filter is invalid: %s.",
+			target.Path, target.Filter)
+		return
+	}
 
 	if purgeOnStart {
 		err := purgePages(target, re)
@@ -136,9 +141,11 @@ waitSignalLoop:
 	if code == -1 {
 		log.Println("Run all targets with SIGUSR1.")
 		for _, target := range confCachectld.Targets {
-			re := regexp.MustCompile(target.Filter)
-			err := purgePages(target, re)
+			re, err := regexp.Compile(target.Filter)
 			if err != nil {
+				log.Println(err)
+			}
+			if err := purgePages(target, re); err != nil {
 				log.Println(err)
 			}
 		}
