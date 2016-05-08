@@ -40,7 +40,7 @@ func purgePages(target cachectl.SectionTarget, re *regexp.Regexp) error {
 	return nil
 }
 
-func scheduledPurgePages(target cachectl.SectionTarget) {
+func scheduledPurgePages(target cachectl.SectionTarget, purgeOnStart bool) {
 
 	if target.PurgeInterval == -1 {
 		log.Printf("cachectld runs for the target(path:%s, filter:%s) when only received USR1\n",
@@ -49,6 +49,13 @@ func scheduledPurgePages(target cachectl.SectionTarget) {
 	}
 
 	re := regexp.MustCompile(target.Filter)
+
+	if purgeOnStart {
+		err := purgePages(target, re)
+		if err != nil {
+			log.Println(err)
+		}
+	}
 
 	for {
 		timer := time.NewTimer(time.Second * time.Duration(target.PurgeInterval))
@@ -97,6 +104,7 @@ func main() {
 
 	// Parse flags
 	version := flag.Bool("v", false, "show version")
+	purgeOnStart := flag.Bool("a", false, "run all targets at the startup time")
 	confPath := flag.String("c", "", "configuration file for cachectld")
 	flag.Parse()
 
@@ -117,7 +125,7 @@ func main() {
 	}
 
 	for _, target := range confCachectld.Targets {
-		go scheduledPurgePages(target)
+		go scheduledPurgePages(target, *purgeOnStart)
 	}
 
 waitSignalLoop:
