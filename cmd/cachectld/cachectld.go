@@ -19,6 +19,17 @@ func purgePages(target cachectl.SectionTarget, re *regexp.Regexp) error {
 		return err
 	}
 
+	if fi.Mode()&os.ModeSymlink == os.ModeSymlink {
+		realPath, err := os.Readlink(fi.Name)
+		if err != nil {
+			return err
+		}
+		fi, err = os.Stat(realPath)
+		if err != nil {
+			return err
+		}
+	}
+
 	verbose := false
 
 	if fi.IsDir() {
