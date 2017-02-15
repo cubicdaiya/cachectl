@@ -30,7 +30,7 @@ func main() {
 		return
 	}
 
-	fi, err := os.Stat(*fpath)
+	fi, err := os.Lstat(*fpath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,7 +42,7 @@ func main() {
 	re := regexp.MustCompile(*filter)
 
 	if fi.Mode()&os.ModeSymlink == os.ModeSymlink {
-		realPath, err := os.Readlink(fi.Name())
+		realPath, err := os.Readlink(*fpath)
 		if err != nil {
 			log.Fatalf("failed to readlink: %s.", fi.Name())
 		}
@@ -50,6 +50,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+		*fpath = realPath
 	}
 
 	if *op == "stat" {
