@@ -20,7 +20,7 @@ func purgePages(target cachectl.SectionTarget, re *regexp.Regexp) error {
 	}
 
 	if fi.Mode()&os.ModeSymlink == os.ModeSymlink {
-		realPath, err := os.Readlink(fi.Name)
+		realPath, err := os.Readlink(fi.Name())
 		if err != nil {
 			return err
 		}

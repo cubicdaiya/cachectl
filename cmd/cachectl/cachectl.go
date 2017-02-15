@@ -42,7 +42,7 @@ func main() {
 	re := regexp.MustCompile(*filter)
 
 	if fi.Mode()&os.ModeSymlink == os.ModeSymlink {
-		realPath, err := os.Readlink(fi.Name)
+		realPath, err := os.Readlink(fi.Name())
 		if err != nil {
 			log.Fatalf("failed to readlink: %s.", fi.Name())
 		}
