@@ -14,9 +14,21 @@ import (
 )
 
 func purgePages(target cachectl.SectionTarget, re *regexp.Regexp) error {
-	fi, err := os.Stat(target.Path)
+	fi, err := os.Lstat(target.Path)
 	if err != nil {
 		return err
+	}
+
+	if fi.Mode()&os.ModeSymlink == os.ModeSymlink {
+		realPath, err := os.Readlink(target.Path)
+		if err != nil {
+			return err
+		}
+		fi, err = os.Stat(realPath)
+		if err != nil {
+			return err
+		}
+		target.Path = realPath
 	}
 
 	verbose := false
