@@ -1,45 +1,11 @@
 package cachectl
 
-/*
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-
-int fadvise(const char *path, float r)
-{
-    int fd;
-    struct stat st;
-    off_t l;
-    fd = open(path, O_RDONLY);
-    if(fd == -1) {
-        return -1;
-    }
-
-    if(fstat(fd, &st) == -1) {
-        goto error;
-    }
-
-    l = (off_t)(st.st_size * r);
-
-    if(posix_fadvise(fd, 0, l, POSIX_FADV_DONTNEED) != 0) {
-        goto error;
-    }
-
-    close(fd);
-    return 1;
-error:
-    close(fd);
-    return -1;
-}
-
-*/
-import "C"
 import (
 	"fmt"
 	"log"
-	"unsafe"
+	"os"
+
+	"golang.org/x/sys/unix"
 )
 
 func purgePages(fpath string, fsize int64, rate float64) error {
@@ -47,10 +13,20 @@ func purgePages(fpath string, fsize int64, rate float64) error {
 		return fmt.Errorf("%.1f: rate should be over 0.0 and less than 1.0\n", rate)
 	}
 
-	cs := C.CString(fpath)
-	defer C.free(unsafe.Pointer(cs))
-	result := C.fadvise(cs, C.float(rate))
-	if result == -1 {
+	f, err := os.Open(fpath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	fi, err := f.Stat()
+	if err != nil {
+		return err
+	}
+	fsize := fi.Size()
+
+	err = unix.Fadvise(int(f.Fd()), 0, fsize*rate, unix.FADV_DONTNEED)
+	if err != nil {
 		return fmt.Errorf("failed to purge page cache for %s", fpath)
 	}
 
