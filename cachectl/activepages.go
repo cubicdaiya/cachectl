@@ -46,7 +46,7 @@ func activePages(path string) (int, error) {
 	result := 0
 
 	for _, p := range pageinfo {
-		if p%2 == 1 {
+		if p&1 == 1 {
 			result++
 		}
 	}
