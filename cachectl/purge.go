@@ -19,13 +19,7 @@ func purgePages(fpath string, fsize int64, rate float64) error {
 	}
 	defer f.Close()
 
-	fi, err := f.Stat()
-	if err != nil {
-		return err
-	}
-	size := fi.Size()
-
-	err = unix.Fadvise(int(f.Fd()), 0, int64(float64(size)*rate), unix.FADV_DONTNEED)
+	err = unix.Fadvise(int(f.Fd()), 0, int64(float64(fsize)*rate), unix.FADV_DONTNEED)
 	if err != nil {
 		return fmt.Errorf("failed to purge page cache for %s", fpath)
 	}
