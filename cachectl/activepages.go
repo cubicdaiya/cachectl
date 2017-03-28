@@ -21,7 +21,7 @@ func activePages(path string) (int, error) {
 	fsize := fi.Size()
 
 	if fsize == 0 {
-		return nil, nil
+		return 0, nil
 	}
 
 	mmap, err := unix.Mmap(int(f.Fd()), 0, int(fsize), unix.PROT_NONE, unix.MAP_SHARED)
@@ -39,7 +39,7 @@ func activePages(path string) (int, error) {
 
 	ret, _, err := unix.Syscall(unix.SYS_MINCORE, mmapPtr, sizePtr, pageinfoPtr)
 	if ret != 0 {
-		return nil, err
+		return 0, err
 	}
 	defer unix.Munmap(mmap)
 

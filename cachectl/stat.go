@@ -18,7 +18,7 @@ func PrintPagesStat(fpath string, fsize int64) {
 
 	pagesActive, err := activePages(fpath)
 	if err != nil {
-		log.Errorf("%v\n", err)
+		log.Fatalf("%v\n", err)
 		return
 	}
 
