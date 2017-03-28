@@ -16,7 +16,12 @@ func PrintPagesStat(fpath string, fsize int64) {
 
 	pages := (fsize + int64(pagesize) - 1) / int64(pagesize)
 
-	pagesActive := activePages(fpath)
+	pagesActive, err := activePages(fpath)
+	if err != nil {
+		log.Printf("%v\n", err)
+		return
+	}
+
 	activeRate := float64(0)
 	if pagesActive == -1 {
 		pagesActive = 0
