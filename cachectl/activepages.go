@@ -28,6 +28,7 @@ func activePages(path string) (int, error) {
 	if err != nil {
 		return 0, err
 	}
+	defer unix.Munmap(mmap)
 
 	pagesize := int64(os.Getpagesize())
 	pages := (fsize + pagesize - 1) / pagesize
@@ -41,7 +42,6 @@ func activePages(path string) (int, error) {
 	if ret != 0 {
 		return 0, err
 	}
-	defer unix.Munmap(mmap)
 
 	result := 0
 
