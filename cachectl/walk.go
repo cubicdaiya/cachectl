@@ -10,6 +10,10 @@ import (
 func WalkPrintPagesStat(path string, re *regexp.Regexp) error {
 	return filepath.Walk(path,
 		func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				log.Println(err.Error())
+				return nil
+			}
 			if !info.Mode().IsRegular() {
 				return nil
 			}
@@ -24,6 +28,10 @@ func WalkPrintPagesStat(path string, re *regexp.Regexp) error {
 func WalkPurgePages(path string, re *regexp.Regexp, rate float64, verbose bool) error {
 	return filepath.Walk(path,
 		func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				log.Println(err.Error())
+				return nil
+			}
 			if !info.Mode().IsRegular() {
 				return nil
 			}
