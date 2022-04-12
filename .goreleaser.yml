@@ -1,5 +1,6 @@
 builds:
-  - main: ./cmd/cachectl/cachectl.go
+  - id: cachectl
+    main: ./cmd/cachectl/cachectl.go
     binary: cachectl
     ldflags:
       - -s -w
@@ -8,7 +9,8 @@ builds:
     goarch:
       - amd64
       - arm64
-  - main: ./cmd/cachectld/cachectld.go
+  - id: cachectld
+    main: ./cmd/cachectld/cachectld.go
     binary: cachectld
     ldflags:
       - -s -w
