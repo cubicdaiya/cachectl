@@ -12,6 +12,9 @@ bin/cachectl: cmd/cachectl/cachectl.go cachectl/*.go
 bin/cachectld: cmd/cachectld/cachectld.go cachectl/*.go
 	GO111MODULE=on go build $(GOFLAGS) -o bin/cachectld cmd/cachectld/cachectld.go
 
+check:
+	go test -v ./cachectl/
+
 fmt:
 	GO111MODULE=on go fmt ./...
 
