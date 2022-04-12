@@ -1,0 +1,25 @@
+builds:
+  - main: ./cmd/cachectl/cachectl.go
+    binary: cachectl
+    ldflags:
+      - -s -w
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+  - main: ./cmd/cachectld/cachectld.go
+    binary: cachectld
+    ldflags:
+      - -s -w
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+archives:
+  - name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}"
+release:
+  github:
+    owner: cubicdaiya
+    name: cachectl
