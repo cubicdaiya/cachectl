@@ -2,7 +2,6 @@ package cachectl
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"golang.org/x/sys/unix"
@@ -31,8 +30,6 @@ func RunPurgePages(path string, fsize int64, rate float64, verbose bool) error {
 	if verbose {
 		fmt.Printf("Before purging %s 's page cache\n\n", path)
 		PrintPagesStat(path, fsize)
-	} else {
-		log.Printf("purging %s 's page cache\n", path)
 	}
 
 	err := purgePages(path, fsize, rate)
